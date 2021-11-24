@@ -9,13 +9,13 @@ function App() {
   const [isProfilePopupOpen, setIsProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isAvatarPopupOpen, setIsAvatarPopupOpen] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState(0);
  
   function closeAllPopups() {
     setIsProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsAvatarPopupOpen(false);
-    setSelectedCard(false);
+    setSelectedCard(0);
   }
 
   React.useEffect(() => {
@@ -32,7 +32,7 @@ function App() {
     }
   }, [isProfilePopupOpen, isAddPlacePopupOpen, isAvatarPopupOpen, selectedCard])
 
-  function handlePopupClick(evt) {
+  function handlePopupClickClose(evt) {
     if (evt.target.classList.contains("popup")) {
       closeAllPopups();
     }
@@ -52,8 +52,13 @@ function App() {
         onEditAvatar={() => setIsAvatarPopupOpen(true)}
         onCardClick={handleCardClick}/>
       <Footer />
-      <PopupWithForm name="submit" title="Редактировать профиль" buttonTitle="Сохранить" 
-      isOpen={isProfilePopupOpen} onClose={()=> closeAllPopups()} onPopupClick={handlePopupClick}>
+      <PopupWithForm 
+        name="submit" 
+        title="Редактировать профиль" 
+        buttonTitle="Сохранить" 
+        isOpen={isProfilePopupOpen} 
+        onClose={()=> closeAllPopups()} 
+        onPopupClick={handlePopupClickClose}>
         <input type="text" id="user-name" name="name" placeholder="Имя" 
         className="popup__field popup__field_type_name" autoComplete="off" 
         required minLength="2" maxLength="40"/>
@@ -63,8 +68,13 @@ function App() {
         required minLength="2" maxLength="200"/>
         <span id="about-error" className="popup__field-error"></span>
       </PopupWithForm>
-      <PopupWithForm name="add" title="Новое место" buttonTitle="Создать"
-        isOpen={isAddPlacePopupOpen} onClose={()=> closeAllPopups()} onPopupClick={handlePopupClick}>
+      <PopupWithForm 
+        name="add" 
+        title="Новое место" 
+        buttonTitle="Создать"
+        isOpen={isAddPlacePopupOpen} 
+        onClose={()=> closeAllPopups()} 
+        onPopupClick={handlePopupClickClose}>
         <input type="text" id="place-name" name="name" placeholder="Название" 
         className="popup__field popup__field_type_placename" autoComplete="off" 
         required minLength="2" maxLength="30"/>
@@ -73,15 +83,23 @@ function App() {
         className="popup__field popup__field_type_link" autoComplete="off" required/>
         <span className="popup__field-error" id="link-error"></span>
       </PopupWithForm>
-      <PopupWithForm name="avatar" title="Обновить аватар" buttonTitle="Сохранить"
-      isOpen={isAvatarPopupOpen} onClose={()=> closeAllPopups()} onPopupClick={handlePopupClick}>
+      <PopupWithForm 
+        name="avatar" 
+        title="Обновить аватар" 
+        buttonTitle="Сохранить"
+        isOpen={isAvatarPopupOpen} 
+        onClose={()=> closeAllPopups()} 
+        onPopupClick={handlePopupClickClose}>
         <input type="url" id="avatar" name="avatar" placeholder="Ссылка" 
         className="popup__field popup__field_type_avatar" autoComplete="off" required />
         <span id="avatar-error" className="popup__field-error"></span>
       </PopupWithForm>
       <PopupWithForm name="delete" title="Вы уверены?" buttonTitle="Да">
       </PopupWithForm>
-      <ImagePopup card={selectedCard} onClose={closeAllPopups} onPopupClick={handlePopupClick}/>
+      <ImagePopup 
+      card={selectedCard} 
+      onClose={closeAllPopups} 
+      onPopupClick={handlePopupClickClose}/>
   </div>
   
 

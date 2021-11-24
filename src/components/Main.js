@@ -33,7 +33,7 @@ function Main(props) {
         ;
       })
       .catch((err) => console.log(`Ошибка загрузки карточек: ${err}`))
-  }, [cards])
+  }, [])
       
   return(
     <main className="content">
