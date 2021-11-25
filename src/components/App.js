@@ -9,13 +9,13 @@ function App() {
   const [isProfilePopupOpen, setIsProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isAvatarPopupOpen, setIsAvatarPopupOpen] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState(0);
+  const [selectedCard, setSelectedCard] = React.useState(null);
  
   function closeAllPopups() {
     setIsProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsAvatarPopupOpen(false);
-    setSelectedCard(0);
+    setSelectedCard(null);
   }
 
   React.useEffect(() => {
