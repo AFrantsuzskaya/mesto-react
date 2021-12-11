@@ -2,7 +2,6 @@ import React from 'react';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
-import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
@@ -17,25 +16,30 @@ function App() {
   const [selectedCard, setSelectedCard] = React.useState(null);
   const [cards, setCards] = React.useState([]);
   const [currentUser, setCurrentUser] = React.useState({});
-
+  
   React.useEffect(() => {
     api
-      .getUserInfo()
-      .then((res) => {
-        setCurrentUser(res);
-      })
-      .catch((err) => console.log(`Ошибка загрузки инициирующих данных: ${err}`))
-  }, [])
-
-  React.useEffect (() => {
-    api
-      .getCardList()
-      .then((cards) => {
-        setCards(cards)
-      })
-      .catch((err) => console.log(`Ошибка загрузки карточек: ${err}`))
+    .getAppInfo()
+    .then(([user, cards]) => {
+      setCurrentUser(user);
+      setCards(cards);
+    })
+    .catch((err) => console.log(`Ошибка загрузки данных: ${err}`))
   }, [])
   
+  function openAddPlacePopup() {
+    setIsAddPlacePopupOpen(true);
+  }
+  
+  function openProfilePopup() {
+    setIsProfilePopupOpen(true);
+  }
+  
+  function openAvatarPopup() {
+    setIsAvatarPopupOpen(true);
+  }
+
+
   function closeAllPopups() {
     setIsProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
@@ -115,7 +119,7 @@ function App() {
     api
     .removeCard(card._id)
     .then(() => {
-      let newCardsList = cards.filter((c) => c._id !== card._id)
+      const newCardsList = cards.filter((c) => c._id !== card._id)
       setCards(newCardsList);
     })
     .catch((err) => console.log(`Ошибка удаления карточки: ${err}`))
@@ -126,9 +130,9 @@ function App() {
     <div className="page">
       <Header />
       <Main 
-        onEditProfile={()=> setIsProfilePopupOpen(true)} 
-        onAddPlace={()=> setIsAddPlacePopupOpen(true)} 
-        onEditAvatar={() => setIsAvatarPopupOpen(true)}
+        onEditProfile={openProfilePopup} 
+        onAddPlace={openAddPlacePopup} 
+        onEditAvatar={openAvatarPopup}
         onCardClick={handleCardClick}
         cards={cards}
         onCardLike={handleCardLike}
@@ -152,12 +156,10 @@ function App() {
         onPopupClick={handlePopupClickClose} 
         onUpdateAvatar={handleUpdateAvatar}
       ></EditAvatarPopup>
-      <PopupWithForm name="delete" title="Вы уверены?" buttonTitle="Да">
-      </PopupWithForm>
       <ImagePopup 
-      card={selectedCard} 
-      onClose={closeAllPopups} 
-      onPopupClick={handlePopupClickClose}/>
+        card={selectedCard} 
+        onClose={closeAllPopups} 
+        onPopupClick={handlePopupClickClose}/>
     </div>
   </CurrentUserContext.Provider>
   );

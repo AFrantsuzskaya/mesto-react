@@ -18,7 +18,7 @@ class Api {
     }
 
     setUserAvatar(data) {
-      let avatar = {avatar: data}
+      const avatar = {avatar: data}
       return this._set('users/me/avatar', 'PATCH', avatar)
         
     }
@@ -37,40 +37,39 @@ class Api {
     }
     
     toggleLike(id, liked) {
-        return this._set(`cards/likes/${id}`, liked ? 'PUT' : 'DELETE')
-      }
+      return this._set(`cards/likes/${id}`, liked ? 'PUT' : 'DELETE')
+    }
 
     _get(query) {
-        const options = {
-            headers: {
-                authorization: this._token
-            }
+      const options = {
+        headers: {
+          authorization: this._token
         }
-        return fetch(this._url(query), options)
-            .then(this._checkResponse)
+      }
+      return fetch(this._addUrl(query), options)
+             .then(this._checkResponse)
     }
 
     _set(query, method, body) {
-        const options = {
-            method,
-            headers: {
-                authorization: this._token,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(body)
-        }
-        
-        return fetch(this._url(query), options)
-            .then(this._checkResponse)
+      const options = {
+        method,
+        headers: {
+          authorization: this._token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      }
+      return fetch(this._addUrl(query), options)
+             .then(this._checkResponse)
     }
     
     _checkResponse(res) {
-       return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)
+      return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)
     }
 
 
-    _url(query) {
-        return `${this._address}/${this._groupId}/${query}`
+    _addUrl(query) {
+      return `${this._address}/${this._groupId}/${query}`
     }
 }
 
