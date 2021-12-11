@@ -28,6 +28,7 @@
 @import url('../src/blocks/element/__image/element__image.css');
 @import url('../src/blocks/element/__title/element__title.css');
 @import url('../src/blocks/element/__button/_active/element__button_active.css');
+@import url('../src/blocks/element/__button/_hidden/element__button_hidden.css');
 @import url('../src/blocks/element/__trash-button/element__trash-button.css');
 @import url('../src/blocks/element/__like-container/elemet__like-container.css');
 @import url('../src/blocks/element/__counter/element__counter.css');

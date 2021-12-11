@@ -16,13 +16,13 @@ class Api {
     setUserInfo(name, about) {
         return this._set('users/me', 'PATCH', {name, about})
     }
-    
-    setUserAvatar(avatar) {
-        avatar = {avatar: avatar}
-        return this._set('users/me/avatar', 'PATCH', avatar)
+
+    setUserAvatar(data) {
+      let avatar = {avatar: data}
+      return this._set('users/me/avatar', 'PATCH', avatar)
         
     }
-
+    
     getCardList() {
         return this._get('cards')
     }

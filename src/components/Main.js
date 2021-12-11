@@ -1,51 +1,23 @@
 import React from 'react';
-import api from '../utils/Api';
 import Card from './Card';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function Main(props) {
-  const [userName, setUserName] = React.useState('');
-  const [userDescription, setUserDescription] = React.useState(''); 
-  const [userAvatar, setUserAvatar] = React.useState(''); 
-  const [cards, setCards] = React.useState([]);
   
-  React.useEffect (() => {
-    api
-      .getUserInfo()
-      .then((res) => {
-        setUserName(res.name);
-        setUserDescription(res.about);
-        setUserAvatar(res.avatar);
-      })
-      .catch((err) => console.log(`Ошибка загрузки инициирующих данных: ${err}`))
-  }, [])
+  const currentUser = React.useContext(CurrentUserContext);
+  
 
-  React.useEffect (() => {
-    api
-      .getCardList()
-      .then((cards) => {
-        setCards(cards.map((card) => ({
-          _id: card._id,
-          link: card.link,
-          name: card.name,
-          likes: card.likes
-        })))
-
-        ;
-      })
-      .catch((err) => console.log(`Ошибка загрузки карточек: ${err}`))
-  }, [])
-      
   return(
     <main className="content">
       <section className="profile content__profile">
         <div className="profile__wrapper">
-          <button type="button" className="profile__avatar" onClick={props.onEditAvatar}  style={{ backgroundImage: `url(${userAvatar})` }}>
+          <button type="button" className="profile__avatar" onClick={props.onEditAvatar}  style={{ backgroundImage: `url(${currentUser.avatar})` }}>
             <div className="profile__overlay"></div>
           </button>
             <div className="profile__info">
-            <h1 className="profile__name">{userName}</h1>
+            <h1 className="profile__name">{currentUser.name}</h1>
             <button type="button" className="button profile__edit-button" onClick={props.onEditProfile}></button>
-            <p className="profile__occupation">{userDescription}</p>  
+            <p className="profile__occupation">{currentUser.about}</p>  
           </div>
         </div>
           <button type="button" className="button profile__add-button" 
@@ -53,8 +25,14 @@ function Main(props) {
       </section>
       <section className="elements">
         <ul className="elements__content content__elements">
-        {cards.map((card) => {
-            return <Card key={card._id} card={card} onCardClick={props.onCardClick}/>
+        {props.cards.map((card) => {
+            return <Card 
+            key={card._id} 
+            card={card} 
+            onCardClick={props.onCardClick}
+            onCardLike={props.onCardLike}
+            onCardDelete={props.onCardDelete}
+            />
           })}
         </ul>
       </section>
